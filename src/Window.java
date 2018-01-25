@@ -14,7 +14,7 @@ public class Window extends JFrame implements ActionListener {
     private JButton btnGenerate;
     private JComboBox cbLevel;
     private Cell cellue;
-    private int size;
+    private int size=50;
 
     public Window() {
         //Konfiguracja okna
@@ -64,42 +64,42 @@ public class Window extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         Object zrodlo = e.getSource();
-        if (zrodlo == btnSavePNG) {
-            try {
+        try{
+            if (zrodlo == btnSavePNG) {
                 cellue.saveImage("maze","png");
-            }catch (Exception e2)
-            {
-                System.out.println("Błąd");
+            } else if (zrodlo == btnGenerate){
+                generateCellsInMaze();
+            } else if (zrodlo == cbLevel) {
+                String poziom = cbLevel.getSelectedItem().toString();
+                if (poziom.equals("Poziom 1")) {
+                    //size = 20;
+                    size = 10;
+                } else if (poziom.equals("Poziom 2")) {
+                    size = 25;
+                } else if (poziom.equals("Poziom 3")) {
+                    size = 50;
+                } else if (poziom.equals("Poziom 4")) {
+                    size = 100;
+                } else if (poziom.equals("Poziom 5")) {
+                    size = 125;
+                }
             }
-        } else if (zrodlo == btnGenerate) {
-            try {
-                setMazeSize(size);
-            }catch(Exception e1) {
-                size=50;
-                setMazeSize(size);
-            }
-        } else if (zrodlo == cbLevel) {
-            String poziom = cbLevel.getSelectedItem().toString();
-            if (poziom.equals("Poziom 1")) {
-                size = 20;
-            } else if (poziom.equals("Poziom 2")) {
-                size = 25;
-            } else if (poziom.equals("Poziom 3")) {
-                size = 50;
-            } else if (poziom.equals("Poziom 4")) {
-                size = 100;
-            } else if (poziom.equals("Poziom 5")) {
-                size = 125;
-            }
+        }catch(Exception ex){
+           System.out.print("Agh! Error. Sorry but I have some problem with maze :(");
+           ex.printStackTrace();
         }
     }
 
-    public void setMazeSize(int n)
-    {
-        cellue = new Cell(n);
-        cellue.setBounds(200,0,502,502);
-        cellue.setBackground(Color.BLACK);
-        this.add(cellue);
-        cellue.repaint();
+    public void generateCellsInMaze() {
+        try {
+            cellue = new Cell(size);
+            cellue.setBounds(200, 0, 502, 502);
+            cellue.setBackground(Color.BLACK);
+            this.add(cellue);
+            cellue.repaint();
+        } catch (Exception ex) {
+            System.out.println("Agh! Error in creating cells!");
+            ex.printStackTrace();
+        }
     }
 }

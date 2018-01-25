@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class Cell extends JPanel {
     private int lengthWall;
-    private int a, b, k, l;
+    private int a, b, k, l;                 //Kazda komorka na wygenerowanej siatce ma swoja pozycje w tablicy. Tworzona jest tablica o wymiarach [k][l]
     private CellInformations[][] table;
     private List<Integer> road;
 
@@ -23,8 +23,6 @@ public class Cell extends JPanel {
         lengthWall = _lengthWall;
         a=0;
         b=0;
-        k=0;
-        l=0;
         table = new CellInformations[500/(_lengthWall)][500/(_lengthWall)];
         road =  new ArrayList<Integer>();
     }
@@ -32,22 +30,24 @@ public class Cell extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.setColor(Color.BLUE);
-        try {
-            l=0;
+        try {                                                   //Try/catch block is paining net on whole surface
+            k=0;
             for (int j = 0; j < 500; j += lengthWall) {
-                k = 0;
+                l = 0;
                 for (int i = 0; i < 500; i += lengthWall) {
                     g.setColor(Color.BLUE);
                     g.drawRect(i, j, lengthWall, lengthWall);
-                    table[l][k] = new CellInformations(i, j);
-                    k++;
+                    table[k][l] = new CellInformations(i, j);
+                    l++;
                 }
-                l++;
+                k++;
             }
+            delateWall(0,0,table, g);                    //Inside delateWall is algorithm which create maze
         }catch(Exception e){
-           System.out.println("bład");
+           System.out.println("Error in painting cells");
+           e.printStackTrace();
         }
-        delateWall(0,0,table, g);
+
     }
 
 
@@ -56,10 +56,10 @@ public class Cell extends JPanel {
         int lastCell = 0;
         int direction = 4;
         boolean[] temp = {true, true, true, true};
-        boolean isDone = true;
+        boolean isDone = true;                  //Variable
         CellInformations topElement = null, rightElement = null, bottomElement = null, leftElement = null;
 
-        CellInformations currentElement = table[l][k];
+        CellInformations currentElement = table[k][l];
         currentElement.setVisited(true);
 
         if((l-1>=0) && (l-1<(500/lengthWall)) && (k>=0) && (k<(500/lengthWall))){
@@ -94,6 +94,7 @@ public class Cell extends JPanel {
             }
             else temp[3]=true;
         }else temp[3]=false;
+
         Random rand = new Random();
 
         while(temp[0]!=false || temp[1]!=false || temp[2]!=false || temp[3]!=false)
