@@ -19,10 +19,11 @@ public class Window extends JFrame implements ActionListener {
     public Window() {
         //Konfiguracja okna
         JFrame window = new JFrame();
-        window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("Generator labiryntów");
         setBounds(0, 0, 720, 540);
         setLayout(null);
+        setResizable(false);
         setVisible(true);
 
         //Tworzenie przycisku Zapisz jako PNG
@@ -51,6 +52,7 @@ public class Window extends JFrame implements ActionListener {
         cbLevel.addItem("Poziom 3");
         cbLevel.addItem("Poziom 4");
         cbLevel.addItem("Poziom 5");
+        cbLevel.addItem("Poziom 6");
         this.add(cbLevel);
         cbLevel.addActionListener(this);
 
@@ -68,19 +70,20 @@ public class Window extends JFrame implements ActionListener {
             if (zrodlo == btnSavePNG) {
                 cellue.saveImage("maze","png");
             } else if (zrodlo == btnGenerate){
-                generateCellsInMaze();
+                generateCellsMaze();
             } else if (zrodlo == cbLevel) {
                 String poziom = cbLevel.getSelectedItem().toString();
                 if (poziom.equals("Poziom 1")) {
-                    //size = 20;
-                    size = 10;
+                    size = 5;
                 } else if (poziom.equals("Poziom 2")) {
-                    size = 25;
+                    size = 20;
                 } else if (poziom.equals("Poziom 3")) {
-                    size = 50;
+                    size = 25;
                 } else if (poziom.equals("Poziom 4")) {
-                    size = 100;
+                    size = 50;
                 } else if (poziom.equals("Poziom 5")) {
+                    size = 100;
+                } else if (poziom.equals("Poziom 6")) {
                     size = 125;
                 }
             }
@@ -90,7 +93,7 @@ public class Window extends JFrame implements ActionListener {
         }
     }
 
-    public void generateCellsInMaze() {
+    public void generateCellsMaze() {
         try {
             cellue = new Cell(size);
             cellue.setBounds(200, 0, 502, 502);
